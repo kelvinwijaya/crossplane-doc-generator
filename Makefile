@@ -2,9 +2,15 @@
 SHELL := /bin/bash
 
 build-doc:
-	docker build . -f deploy/doc.Dockerfile -t crdsdev/doc:latest
+	nerdctl build . -f deploy/doc.Dockerfile -t crdsdev/doc:latest
 
 build-gitter:
-	docker build . -f deploy/gitter.Dockerfile -t crdsdev/doc-gitter:latest
+	nerdctl build . -f deploy/gitter.Dockerfile -t crdsdev/doc-gitter:latest
 
-.PHONY: build-doc build-gitter
+local-build-doc:
+	go build -o doc -mod=readonly -v ./cmd/doc/main.go
+
+run-doc:
+	go run ./cmd/doc/main.go
+
+.PHONY: build-doc build-gitter run-doc
